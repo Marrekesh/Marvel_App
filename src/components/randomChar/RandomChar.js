@@ -1,86 +1,60 @@
-import {Component} from 'react'
+import {useState, useEffect} from 'react'
 
 import './randomChar.scss';
 import mjolnir from '../../resources/img/mjolnir.png';
-import MarvelServices from '../../services/MarverServices'
+import useMarvelServices from '../../services/MarverServices'
 
 import Spinner from '../spinner/Spinner'
 import ErrorMessage from '../errorMessage/ErrorMessage'
 
 
-class RandomChar extends Component {
+const RandomChar = (props) => {
 
-    state = {
-        char: {},
-        spinner: true,
-        error: false
+
+    const [char, setChar] = useState({})
+
+    const {spinner, error, getCharacter, clearError} = useMarvelServices();
+
+    useEffect(() => {
+        updateChar()
+    }, [])
+
+    const onCharLoaded = (char) => {
+        setChar(char)
     }
 
-    marvelServices = new MarvelServices()
-
-    componentDidMount() {
-       this.updateChar() 
-    }
-
-    onCharLoaded = (char) => {
-        this.setState({
-            char,
-            spinner: false
-        })
-    }
-
-    onCharLoading = () => {
-        this.setState({
-            spinner: true
-        })
-    }
-
-    onError = () => {
-        this.setState({
-            spinner: false,
-            error: true
-        })
-    }
-
-    updateChar = () => {
+    const updateChar = () => {
+        clearError()
         const id = Math.floor(Math.random() * (1011400 - 1011000) + 1011000);
-        this.onCharLoading();
-        this.marvelServices
-            .getCharacter(id)
-            .then(this.onCharLoaded) 
-            .catch(this.onError)
+        getCharacter(id)
+            .then(onCharLoaded) 
     }
 
-    render() {
+    const showSpinner = spinner ? <Spinner/> : null;
+    const showError = error ? <ErrorMessage/> : null;
+    const showContent = !(spinner || error || !char) ? <View char={char}/> : null
 
-        const {char, spinner, error} = this.state
+    return (
+        <div className="randomchar">
+            {showSpinner}
+            {showError}
+            {showContent}
 
-        const showSpinner = spinner ? <Spinner/> : null;
-        const showError = error ? <ErrorMessage/> : null;
-        const showContent = !(spinner || error) ? <View char={char}/> : null
-
-        return (
-            <div className="randomchar">
-                {showSpinner}
-                {showError}
-                {showContent}
-
-                <div className="randomchar__static">
-                    <p className="randomchar__title">
-                        Random character for today!<br/>
-                        Do you want to get to know him better?
-                    </p>
-                    <p className="randomchar__title">
-                        Or choose another one
-                    </p>
-                    <button className="button button__main" onClick={this.updateChar}>
-                        <div className="inner">try it</div>
-                    </button>
-                    <img src={mjolnir} alt="mjolnir" className="randomchar__decoration"/>
-                </div>
+            <div className="randomchar__static">
+                <p className="randomchar__title">
+                    Random character for today!<br/>
+                    Do you want to get to know him better?
+                </p>
+                <p className="randomchar__title">
+                    Or choose another one
+                </p>
+                <button className="button button__main" onClick={updateChar}>
+                    <div className="inner">try it</div>
+                </button>
+                <img src={mjolnir} alt="mjolnir" className="randomchar__decoration"/>
             </div>
-        )
-    }
+        </div>
+    )
 }
 
 const View = ({char}) => {
