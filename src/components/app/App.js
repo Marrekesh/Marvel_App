@@ -1,39 +1,30 @@
-import {useState} from 'react'
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+
 import AppHeader from "../appHeader/AppHeader";
-import RandomChar from "../randomChar/RandomChar";
-import CharList from "../charList/CharList";
-import CharInfo from "../charInfo/CharInfo";
-import ComicsList from "../comicsList/ComicsList"
-import AppBaner from "../appBanner/AppBanner"
-import { BrowserRouter as Router, Route } from 'react-router-dom';
+import {MainPage, ComicsPage, Page404} from '../pages';
+import SingleComic from '../singleComic/SingleComic';
 
-import decoration from '../../resources/img/vision.png';
 const App = () => {
-
-
-    const [charSelected, setChar] = useState(null)
-
-    const onCharSelected = (id) => {
-        setChar(id)
-    }
 
     return (
         <Router>
             <div className="app">
                 <AppHeader/>
                 <main>
-                    <Route path="/">
-                        <RandomChar/>
-                        <div className="char__content">
-                            <CharList onCharSelected={onCharSelected}/>
-                            <CharInfo charId={charSelected}/>
-                        </div>
-                        <img className="bg-decoration" src={decoration} alt="vision"/>
-                    </Route>
-                    <Route path="/comics">
-                        <AppBaner/>
-                        <ComicsList/>
-                    </Route>
+                    <Switch>
+                        <Route exact path="/">
+                            <MainPage/>
+                        </Route>
+                        <Route exact path="/comics">
+                            <ComicsPage/>
+                        </Route>
+                        <Route exact path="/comics/:comicID">
+                            <SingleComic/>
+                        </Route>
+                        <Route path="*">
+                            <Page404/>
+                        </Route>
+                    </Switch>
                 </main>
             </div>
         </Router>
