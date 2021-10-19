@@ -5,7 +5,7 @@ import CharList from "../charList/CharList";
 import CharInfo from "../charInfo/CharInfo";
 import ComicsList from "../comicsList/ComicsList"
 import AppBaner from "../appBanner/AppBanner"
-
+import { BrowserRouter as Router, Route } from 'react-router-dom';
 
 import decoration from '../../resources/img/vision.png';
 const App = () => {
@@ -18,19 +18,25 @@ const App = () => {
     }
 
     return (
-        <div className="app">
-            <AppHeader/>
-            <main>
-                {/* <RandomChar/>
-                <div className="char__content">
-                    <CharList onCharSelected={onCharSelected}/>
-                    <CharInfo charId={charSelected}/>
-                </div>
-                <img className="bg-decoration" src={decoration} alt="vision"/> */}
-                <AppBaner/>
-                <ComicsList/>
-            </main>
-        </div>
+        <Router>
+            <div className="app">
+                <AppHeader/>
+                <main>
+                    <Route path="/">
+                        <RandomChar/>
+                        <div className="char__content">
+                            <CharList onCharSelected={onCharSelected}/>
+                            <CharInfo charId={charSelected}/>
+                        </div>
+                        <img className="bg-decoration" src={decoration} alt="vision"/>
+                    </Route>
+                    <Route path="/comics">
+                        <AppBaner/>
+                        <ComicsList/>
+                    </Route>
+                </main>
+            </div>
+        </Router>
     )
 }
 
