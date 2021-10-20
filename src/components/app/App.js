@@ -18,7 +18,7 @@ const App = () => {
                         <Route exact path="/comics">
                             <ComicsPage/>
                         </Route>
-                        <Route exact path="/comics/:comicID">
+                        <Route exact path="/comics/:comicId">
                             <SingleComic/>
                         </Route>
                         <Route path="*">

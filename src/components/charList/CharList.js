@@ -22,7 +22,7 @@ const CharList = (props) => {
     useEffect(() => {
         onRequest(offset, true);
     },[])
-
+ 
 
     const onRequest = (offset, initial) => {
         initial ? setNewItemLoading(false) : setNewItemLoading(true)
@@ -83,5 +83,7 @@ const CharList = (props) => {
     )
 
 }
+
+
 
 export default CharList;

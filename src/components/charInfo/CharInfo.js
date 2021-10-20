@@ -21,7 +21,6 @@ const CharInfo = (props) => {
         setChar(char)
     }
 
-
     const updateChar = () => {
         const {charId} = props
 
